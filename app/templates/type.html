@@ -1,0 +1,337 @@
+<!-- extend from base layout -->
+{% extends "loggedbase.html" %}
+{% set active_page = "type" %}
+
+{% block js %}
+<script type="text/javascript">
+  function initab() {
+	$('#myTab a').click(function (e) {
+	  e.preventDefault();
+	  $(this).tab('show');
+	})
+	$('#myTab a:first').tab('show');
+  }
+
+  function pageOnLoad() {
+	initab();
+  }
+
+  function updateButton(value1){
+  	$('#btn'+value1).attr('href', "/scenarios/_addObject?id="+value1+"&cmd="+$('#sel'+value1).val()); 
+  }
+
+</script>
+{% endblock %}
+
+{% block content %}
+
+<style>
+	#pageslide {
+    /* These styles MUST be included. Do not change. */
+    display: none;
+    position: absolute;
+    position: fixed;
+    top: 0;
+    margin-top: 20px;
+    height: 100%;
+    z-index: 0;
+    
+    /* Specify the width of your pageslide here */
+    width: 37%;
+    padding: 20px;
+    
+    /* These styles are optional, and describe how the pageslide will look */
+    background-color: #333;
+    color: #FFF;
+    -webkit-box-shadow: inset 0 0 5px 5px #222;
+    -moz-shadow: inset 0 0 5px 5px #222;
+    box-shadow: inset 0 0 5px 5px #222;
+	}
+    #modal { display: none; }
+    .letterpress {
+    	text-shadow: 0px 1px 0px rgba(255,255,255,.3), 0px -1px 0px rgba(0,0,0,.7);
+	}
+</style>
+
+
+<h3>Type of Scenario</h3>
+<hr  style="border-width: 5px 0; margin: 5px 0;">
+<div class="container-fluid">
+	<div class="row-fluid">
+		<div class="span2">
+			<h4>Tutorial</h4>
+			<ul class="nav nav-tabs nav-stacked">
+				<li><a class="second" href="#modal-howto1">Basic</a></li>
+				<div id="modal-howto1" style="display:none">
+					<br />
+					<a href="javascript:$.pageslide.close()"><i class="pull-right icon-remove icon-white"></i></a>
+					<h3 class="letterpress">Scenario : How To</h3>
+					<p>
+						This page is used to generate a scenario based on an utilisation of the installed modules.
+						Here is a little tutorial which will help you to create some scenarios.
+					</p>
+					<hr style="border: none; border-top: dashed 2px; color: #222;">
+					<h4 class="letterpress">Selecting IP(s)</h4>
+					<p>
+						First of all, you should check the IP(s) you want to assign a module to. You can do this clicking the IP you want. Adding and deleting IP(s) can be done using the previous page.
+					</p>
+					<hr style="border: none; border-top: dashed 2px; color: #222;">
+					<h4 class="letterpress">Modules</h4>
+					<p>
+						As you can see on the right side of this page, there is a list of module you can apply to your selected IP(s). Each module is independent and can be applied to as many IPs as you want.
+					</p>
+					<hr style="border: none; border-top: dashed 2px; color: #222;">
+					<h4 class="letterpress">Execution Order</h4>
+					<p>
+						If you apply multiple IPs to one module two cases are possible. <br />
+						<dl>
+							<dt>First Case</dt>
+							<dd>The module accepts multiple IP in its arg line. In this case, the module will be executed only once. </dd>
+							<dt>Second Case</dt>
+							<dd>The module accepts only one IP in its arg line. In this case the module will be executed as many times as necessary.</dd>
+						</dl>
+					</p>
+				</div>
+				<li><a class="second" href="#modal-howto2">Modules</a></li>
+				<div id="modal-howto2" style="display:none">
+					<br />
+					<a href="javascript:$.pageslide.close()"><i class="pull-right icon-remove icon-white"></i></a>
+					<h3 class="letterpress">Module Configuration : How To</h3>
+					<p>
+						As said in the previous tutorial, this page uses module. Each module has it's own configuration panel. Here is a little tutorial explaining how to configure a module you want to use.
+					</p>
+					<hr style="border: none; border-top: dashed 2px; color: #222;">
+					<h4 class="letterpress">Preset or Custom Configuration ?</h4>
+					<p>
+						On each module configuration page, you can choose between two methods : Preset or Custom Configuration.<br />
+						If you choose to use presets, you can choose one in a list we made just for you. Note that you can add arguments to the preset by adding arguments in the field below.<br />
+						If you choose to use the custom configuration method, you edit yourself the argument line and you can check some basic modes (for example, with nmap, you can choose OS detection and Firewall detection and then add some arguments)
+					</p>
+					<hr style="border: none; border-top: dashed 2px; color: #222;">
+					<h4 class="letterpress">Add your own module</h4>
+					<p>
+						Sometimes you fill find out that a module you want to use isn't in the list we made for you. That's why we added the last item in the module list.<br />
+						Using that menu, you can add your own module, based on a script or an executable. That's quite convenient right ? Though there are some inconvenients with this method. Since we don't know what your script/binary will do, we can't integrate that in the report. We will pretify the output and give it to you. 
+					</p>
+				</div>
+				<li><a class="second" href="#modal-howto3">XML</a></li>
+				<div id="modal-howto3" style="display:none">
+					<br />
+					<a href="javascript:$.pageslide.close()"><i class="pull-right icon-remove icon-white"></i></a>
+					<h3 class="letterpress">XML : How To</h3>
+					<p>
+						You can export or import an XML file that will be used to describe the pentest scenario you want to use. Sometimes you just want to carry a simple XML file on your computer and just upload it in the web application. Like that, you don't waste your time creating a scenario from scratch using the web application.
+					</p>
+					<hr style="border: none; border-top: dashed 2px; color: #222;">
+					<h4 class="letterpress">Generate the XML</h4>
+					<p>
+						As you complete your pentest scenario, on the manager page, you can export your scenario to XML format. Of course that format is understandable and if you want you can even create one from scratch.
+					</p>
+					<hr style="border: none; border-top: dashed 2px; color: #222;">
+				</div>
+			</ul>
+		</div>
+		<div class="span3">
+			<h4>Attribution</h4>
+			<ul class="nav nav-tabs nav-stacked">
+                {% for f in forms.typeipform.fields %}
+                    {{ f }}
+                {% endfor %}
+				{% with ips = ips %}
+				{% for include in ips.includedip %}
+				<li>
+					<label class="checkbox form-inline">
+						<input type="checkbox">{{include}}
+					</label>
+				</li>
+				{% endfor %}
+				{% endwith %}
+			</ul>
+		</div>
+		<div class="span3">
+			<h4>Modules</h4>
+			<ul class="nav nav-tabs nav-stacked">
+				<!-- NMAP -->
+				<li><a href="#modal-nmap" class="second">Nmap <i class="icon-chevron-right pull-right"></i></a></li>
+				<div id="modal-nmap" style="display:none">
+					<br />
+					<a href="javascript:$.pageslide.close()"><i class="pull-right icon-remove icon-white"></i></a>
+					<h3 class="letterpress">Nmap Module Configuration</h3>
+				  	<p>Nmap is a free and open source utility for network discovery and security auditing. This module uses a native python solution called python-nmap which guarantee that there will be no system call during the scans and a good error handling.</p>
+				  	<hr  style="border: none; border-top: dashed 2px; color: #222;">
+					<h4 class="letterpress">Using a Preset</h4>
+                    {% if 'nmap' in forms.keys() %}
+                        {{ forms.nmap.preset }}
+                        {{ forms.nmap.additional_args(placeholder='Additionnal Arguments') }}
+                    {% endif %}
+                    <div class="btn-group">
+                        <a class="btn btn-primary" href="javascript:$.pageslide.close()"><i class="icon-remove icon-white"></i> Cancel</a>
+                        <a class="btn btn-primary" href="{{ url_for('type', form='nmap', type='preset') }}"><i class="icon-ok icon-white"></i> Validate</a>
+                    </div>
+					<hr  style="border: none; border-top: dashed 2px; color: #222;">
+					<h4 class="letterpress">Configuring the Module</h4>
+					<form>
+						<div class="row-fluid">
+							<div class="span6">
+								<label class="checkbox">  
+									<input type="checkbox">OS Detection
+								</label>
+								<label class="checkbox">  
+									<input type="checkbox">Version Detection
+								</label>
+								<label class="checkbox">  
+									<input type="checkbox">Firewall Detection
+								</label>
+							</div>
+							<div class="span6">
+								<label class="checkbox">  
+									<input type="checkbox">Another Option
+								</label>
+								<label class="checkbox">  
+									<input type="checkbox">Another Option
+								</label>
+								<label class="checkbox">  
+									<input type="checkbox">Another Option
+								</label>
+							</div>
+						</div>
+						<input type="text" class="span4" placeholder="Arguments">
+					</form>
+					<a class="btn btn-primary" href="javascript:$.pageslide.close()"><i class="icon-remove icon-white"></i> Cancel</a>
+					<a class="btn btn-primary" href="javascript:$.pageslide.close()"><i class="icon-ok icon-white"></i> Save</a>
+				</div>
+
+				<!-- NIKTO -->
+				<li><a href="#modal-nikto" class="second">Nikto <i class="icon-chevron-right pull-right"></i></a></li>
+				<div id="modal-nikto" style="display:none">
+					<br />
+					<a href="javascript:$.pageslide.close()"><i class="pull-right icon-remove icon-white"></i></a>
+					<h3>Nikto Module Configuration</h3>
+					<p>Hey there. I want you to put some options there. Would you mind ?</p>
+					<form>
+						<label class="checkbox">  
+							<input type="checkbox">Here is an option. 
+						</label>
+						<label class="checkbox">  
+							<input type="checkbox">Here is another option. 
+						</label>
+						<label>Additionnal Arguments</label>
+						<input type="text" class="span4">
+					</form>
+					<a class="btn btn-primary" href="javascript:$.pageslide.close()"><i class="icon-remove icon-white"></i> Cancel</a>
+					<a class="btn btn-primary" href="javascript:$.pageslide.close()"><i class="icon-ok icon-white"></i> Save</a>
+				</div>
+
+				<!-- METASPLOIT -->
+				<li><a href="#modal-metasploit" class="second">Metasploit<i class="icon-chevron-right pull-right"></i></a></li>
+				<div id="modal-metasploit" style="display:none">
+					<br />
+					<a href="javascript:$.pageslide.close()"><i class="pull-right icon-remove icon-white"></i></a>
+					<h3>Metasploit Module Configuration</h3>
+					<dl>
+				  		<dt>Description of the Module</dt>
+				  		<dd>
+				  			The Metasploit Project is a computer security project which provides information about security vulnerabilities and aids in penetration testing and IDS signature development.
+				  		</dd>
+					</dl>
+				</div>
+
+				<!-- SQLMAP -->
+				<li><a href="#modal-sqlmap" class="second">SQLMap<i class="icon-chevron-right pull-right"></i></a></li>
+				<div id="modal-sqlmap" style="display:none">
+					<br />
+					<a href="javascript:$.pageslide.close()"><i class="pull-right icon-remove icon-white"></i></a>
+					<h3>SQLMap Module Configuration</h3>
+					<dl>
+				  		<dt>Description of the Module</dt>
+				  		<dd>
+				  			Sqlmap is an open source penetration testing tool that automates the process of detecting and exploiting SQL injection flaws and taking over of database servers.
+				  		</dd>
+					</dl>
+				</div>
+
+				<!-- TCPDUMP -->
+				<li><a href="#modal-tcpdump" class="second">TcpDump<i class="icon-chevron-right pull-right"></i></a></li>
+				<div id="modal-tcpdump" style="display:none">
+					<br />
+					<a href="javascript:$.pageslide.close()"><i class="pull-right icon-remove icon-white"></i></a>
+					<h3>TcpDump Module Configuration</h3>
+					<dl>
+				  		<dt>Description of the Module</dt>
+				  		<dd>
+				  			Tcpdump is a powerful command-line packet analyzer.
+				  		</dd>
+					</dl>
+				</div>
+
+				<!-- HPING -->
+				<li><a href="#modal-hping" class="second">Hping3<i class="icon-chevron-right pull-right"></i></a></li>
+				<div id="modal-hping" style="display:none">
+					<br />
+					<a href="javascript:$.pageslide.close()"><i class="pull-right icon-remove icon-white"></i></a>
+					<h3>Hping3 Module Configuration</h3>
+					<dl>
+				  		<dt>Description of the Module</dt>
+				  		<dd>
+				  			Hping3 is a network tool able to send custom TCP/IP packets and to display target replies like ping program does with ICMP replies.
+				  		</dd>
+					</dl>
+				</div>
+
+				<!-- ARP-SCAN -->
+				<li><a href="#modal-arpscan" class="second">Arp-Scan<i class="icon-chevron-right pull-right"></i></a></li>
+				<div id="modal-arpscan" style="display:none">
+					<br />
+					<a href="javascript:$.pageslide.close()"><i class="pull-right icon-remove icon-white"></i></a>
+					<h3>Arp-Scan Module Configuration</h3>
+				</div>
+
+				<!-- KISMET -->
+				<li><a href="#modal-kismet" class="second">Kismet<i class="icon-chevron-right pull-right"></i></a></li>
+				<div id="modal-kismet" style="display:none">
+					<br />
+					<a href="javascript:$.pageslide.close()"><i class="pull-right icon-remove icon-white"></i></a>
+					<h3>Kismet Module Configuration</h3>
+				</div>
+
+				<!-- AIRMONG-NG -->
+				<li><a href="#modal-airmongng" class="second">Airmong-ng<i class="icon-chevron-right pull-right"></i></a></li>
+				<div id="modal-airmongng" style="display:none">
+					<br />
+					<a href="javascript:$.pageslide.close()"><i class="pull-right icon-remove icon-white"></i></a>
+					<h3>Airmong-Ng Module Configuration</h3>
+				</div>
+
+				<!-- Own module configuration -->
+				<li><a href="#modal-ownmodule" class="second">Add your Module<i class="icon-chevron-right pull-right"></i></a></li>
+				<div id="modal-ownmodule" style="display:none">
+					<br />
+					<a href="javascript:$.pageslide.close()"><i class="pull-right icon-remove icon-white"></i></a>
+					<h3>Add a Module</h3>
+					<p>Here you can add your own module based on a script or an executable. You must give the path of the executable and the application will validate it.</p>
+					<form>
+						<label>Module Name</label>  
+				  		<input type="text" class="span4">
+				  		<label>Executable Path</label>
+				  		<input type="text" class="span4">
+				  		<label>Description</label>
+				  		<input type="text" class="span4">
+				  		<br />
+				  		<a id="validate-module" class="btn btn-primary"><i class="icon-ok icon-white"></i> Validate</a>
+					</form>
+				</div>
+			</ul>
+		</div>
+	</div>
+</div>
+
+<br />
+<ul class="pager pull-left">
+	<li><a href="/scenarios">&larr; Previous Step</a></li>
+</ul>
+
+<script src="/static/js/jquery.pageslide.js"></script>
+<script>
+    $(".second").pageslide({ direction: "left", modal: true });
+</script>
+{% endblock%}

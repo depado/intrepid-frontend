@@ -1,0 +1,65 @@
+<!-- extend from base layout -->
+{% extends "loggedbase.html" %}
+{% set active_page = "settings" %}
+
+{% block js %}
+<script type="text/javascript">
+	function initab() {
+		$('#myTab a').click(function (e) {
+			e.preventDefault();
+			$(this).tab('show');
+		})
+		$('#myTab a:first').tab('show');
+	}
+	function pageOnLoad(){
+		$('#help-updatetime').popover()
+		$('#help-currentpassword').popover()
+		$('a#default-updatetime').bind('click', function() {
+		document.getElementById('updatetime').value="2000";
+		})
+		$("#logout").tooltip();
+		initab();
+	}
+</script>
+{% endblock %}
+
+{% block content %}
+<h3><img class="pull-left" src="/static/img/DefaultIcon/png/32x32/preferences.png"> Settings <a href="#myModal" role="button" data-toggle="modal"><i class="icon-question-sign"></i></a></h3>
+<hr style="border-width: 5px 0; margin: 5px 0;">
+<form action="" method="post" name="setting">
+	<ul class="nav nav-tabs">
+	  <li class="active"><a href="#system" data-toggle="tab"><i class="icon-search"></i> System</a></li>
+	  <li><a href="#network" data-toggle="tab"><i class="icon-signal"></i> Network</a></li>
+	  <li><a href="#gui" data-toggle="tab"><i class="icon-tasks"></i> Interface</a></li>
+	</ul>
+
+	<div class="tab-content">
+	  <div class="tab-pane fade in active" id="system">
+		<h4>Change Password</h4>
+		<div class="input-append">
+			{{form.hidden_tag()}}
+			{{form.currentpassword(size=30,placeholder="Current Password")}}
+			<a id="help-currentpassword" class="btn btn-primary" data-toggle="popover" title="" data-html="true" data-content="Changes the password to access the webapp. No effect right now." data-original-title="Password">Help</a>
+			</div>
+			<br />
+			{{form.newpassword(size=30,placeholder="New Password")}}<br />
+			{{form.confirmpassword(size=30,placeholder="Confirm New Password")}}
+	  </div>
+	  <div class="tab-pane fade in" id="network">
+			<h4>Set Network Interface</h4>
+			<p>Current Network Interface : {{ settings.interface }}</p>
+			{{form.interface(size=30,placeholder="New interface")}}
+	  </div>
+	  <div class="tab-pane fade in" id="gui">
+			<h4>Graphical Interface</h4>
+			<div class="input-append">
+				{{form.hidden_tag()}}
+				{{form.updatetime(size=30,placeholder="Refresh Time")}}
+				<a id="default-updatetime" class="btn btn-primary">Default</a>
+			</div>
+			<a id="help-updatetime" role="button" data-trigger="hover" data-toggle="popover" title="" data-html="true" data-content="Refreshing data (CPU, RAM and Disk) frequency. Must be in milliseconds. Keep in mind that higher refresh rate means higher CPU consumption.<br />Current value : {{ settings.updatetime }} ms" data-original-title="Refresh Time"><i class="icon-question-sign"></i></a>
+	  </div>
+	</div>
+	<p><input type="submit" value="Save" class="btn btn-primary"></p>
+</form>	
+{% endblock %}

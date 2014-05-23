@@ -1,0 +1,83 @@
+{% extends "loggedbase.html" %}
+{% set active_page = "manager" %}
+
+{% block js %}
+<script type="text/javascript">
+	function pageOnLoad() {
+		$(".collapse").collapse()
+		$('#launch-settings').popover()
+  	}
+</script>
+{% endblock %}
+
+{% block content %}
+
+<h3>Scenario Manager</h3>
+<hr  style="border-width: 5px 0; margin: 5px 0;">
+<form>
+	<a href="#settingsModal" class="btn btn-primary" data-toggle="modal">Launch everything <i class="icon-chevron-right icon-white"></i></a>
+ 
+<div id="settingsModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+		<h3 id="myModalLabel">Settings</h3>
+  	</div>
+  <div class="modal-body">
+    <span>{{form.options}} Concurrent</span>
+  </div>
+  <div class="modal-footer">
+    <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+    <button class="btn btn-primary" type="submit">Start</button>
+  </div>
+</div>
+
+</form>
+<div class="container-fluid">
+	<div class="row-fluid">
+		<div class="span10">
+			<table class="table table-hover">
+				<tbody>
+					<tr>
+						<th>Target</th>
+						<th>Type</th>
+						<th>Command</th>
+						<th>Status</th>
+						<th>Control</th>
+						<th>Results</th>
+					</tr>
+					{% with scenario = scenario %}
+					{% for scenarobj in scenario %}
+					<tr>
+						<td>{{scenarobj.target}}</td>
+						<td>{{scenarobj.type}}</td>
+						<td>{{scenarobj.command}}</td>
+						{% if scenarobj.status is sameas "Stopped" %}
+						<td><a href="/scenarios/manager/_startSingle?id={{loop.index0}}" class="btn btn-small">Launch <i class="icon-chevron-right"></i></td>
+						{% else %}
+						<td>{{scenarobj.status}}</td>
+						{% endif %}
+						<td>
+							{% if scenarobj.status is sameas "Stopped" %}
+								{% if loop.index0 != 0 %}
+								<a href='/scenarios/manager/_upObj?id={{loop.index0}}'><i class="icon-arrow-up"></i></a>
+								{% else %}
+								<i class="icon-none"></i>
+								{% endif %}
+								{% if not loop.last %}
+								<a href='/scenarios/manager/_downObj?id={{loop.index0}}'><i class="icon-arrow-down"></i></a>
+								{% else %}
+								<i class="icon-none"></i>
+								{% endif %}
+								<a href='/scenarios/manager/_delObj?id={{loop.index0}}'><i class="icon-remove"></i></a>
+							{% endif %}
+						</td>
+						<td><a href="#{{loop.index0}}" data-toggle="collapse" data-target="#collapse{{loop.index0}}"><i class="icon-chevron-right pull-right"></i></a></td>
+					</tr>
+					{% endfor %}
+					{% endwith %}
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+{% endblock %}

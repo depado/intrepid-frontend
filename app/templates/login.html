@@ -1,0 +1,36 @@
+<!-- extend from base layout -->
+{% extends "base.html" %}
+
+{% block header %}
+<div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container-fluid">
+            <a class="brand" href="/"><font size="6">intre</font><font color="red" size="10">π</font><font size="6">d</font></a>
+            <ul class="nav">
+                <p></p>
+                <p></p>
+                <li><p class="navbar-text">intrepid [ɪnˈtrɛpɪd]. adj. fearless; daring;</p></li>
+            </ul>
+
+            <form class="navbar-form pull-right" action="" method="post" name="login" style="margin-top: 5px">
+                {{form.hidden_tag()}}
+                {{form.password(size=30,placeholder="Password")}}
+                <input type="submit" value="Login" class="btn btn-primary">
+            </form>
+        </div>
+    </div>
+    <div class="jumbotron masthead">
+        <p class="lead">Intre<font color="red" size="20">π</font>d <font size="3">intrepid [ɪnˈtrɛpɪd]. adj. fearless; daring;</p>
+        
+        <p class="lead">Pentesting distribution for Raspberry Pi <img class="pull-left" src="/static/img/rasp_logo.png"></p>
+    </div>
+</div>
+
+
+{% endblock %}
+
+{% block content %}
+
+
+
+{% endblock %}
